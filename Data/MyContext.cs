@@ -11,6 +11,8 @@ namespace Note.Data
 
         }
         public DbSet<Notes> Notes { get; set; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<UserNote> UserNote { get; set; }
     }
     
 }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Note.Entities; 
 using Note.Data;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
