@@ -1,5 +1,7 @@
 ﻿@model List<UsersNotesViewModel>
-
+@{
+    
+}
 <div class="container mt-3">
     <table class="table table-bordered">
         <thead>
@@ -11,6 +13,7 @@
             </tr>
         </thead>
         <tbody>
+            
             @foreach (var item in Model)
             {
                 <tr>
@@ -18,8 +21,9 @@
                     <td>@item.NoteDesc</td>
                     <td>@item.FullName</td>    
                     <td>
-                    <a href="" class="btn btn-primary ">Düzenle</a>
-                    <a href="" class="btn btn-danger ">Sil</a>
+                    <a href="/Edit/@item.NoteId" class="btn btn-primary ">Düzenle</a>
+                    <button type="button" class="btn btn-sm btn-danger btn-delete" data-id="@item.NoteId">Sil</button>
+
                     </td>
                 </tr>
                 
@@ -27,3 +31,36 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".btn-delete");
+
+        deleteButtons.forEach(btn => {
+            btn.addEventListener("click", function () {
+                const noteId = this.getAttribute("data-id");
+
+                Swal.fire({
+                    title: "Emin misiniz?",
+                    text: "Bu kaydı silmek üzeresiniz!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Evet, sil!",
+                    cancelButtonText: "İptal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Silme isteğini gönder
+                        fetch(`/Notes/Delete/${noteId}`, {
+                            method: "POST"
+                        }).then(() => {
+                            Swal.fire("Silindi!", "Kayıt başarıyla silindi.", "success")
+                                .then(() => {
+                                    location.reload();
+                                });
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>
