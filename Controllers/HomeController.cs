@@ -25,7 +25,7 @@ public class HomeController : Controller
         var notes = _context.UserNote
         .Include(us => us.Users)
         .Include(us => us.Notes)
-        .Where(us => us.IsActive == true)
+        .Where(us => us.Notes!.IsActive == true)
         // .Where(us => us.Users!.Id == userId)
         .Select(us => new UsersNotesViewModel
         {
@@ -83,13 +83,14 @@ public class HomeController : Controller
         _context.SaveChanges();
         return RedirectToAction("Index");
     }
-    [Route("Notes/Delete/{id}")]
     [HttpPost]
+    [Route("Notes/Delete/{id}")]
     public IActionResult Delete(int id)
     {
-        var note = _context.Notes.Find(id);
-        if (note == null) return NotFound();
-        note.IsActive = false;
+        var Notes = _context.Notes.Find(id);
+        if (Notes == null) return NotFound();
+        Notes.IsActive = false;
+        //_context.Jobs.Remove(job);  //direkt siler
         _context.SaveChanges();
         return RedirectToAction("Index");
     }
